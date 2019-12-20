@@ -1,0 +1,28 @@
+{
+  "name": "storybook-preset-nuxt",
+  "private": true,
+  "workspaces": [
+    "storybook-preset-nuxt",
+    "examples/*"
+  ],
+  "devDependencies": {
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
+    "prettier": "^1.19.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,md,json}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  }
+}

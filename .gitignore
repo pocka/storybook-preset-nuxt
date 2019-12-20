@@ -1,0 +1,10 @@
+# === Project ===
+.tmp
+.tmp-*
+*.log
+
+# === JavaScript/Node.js ===
+node_modules
+yarn.lock
+.npmrc
+package-lock.json

@@ -1,0 +1,28 @@
+{
+  "name": "storybook-preset-nuxt",
+  "version": "0.1.0",
+  "description": "Nuxt.js preset for Storybook",
+  "main": "lib/index.js",
+  "repository": "https://github.com/pocka/storybook-preset-nuxt",
+  "author": "Shota Fuji <pockawoooh@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "find-up": "^4.1.0"
+  },
+  "devDependencies": {
+    "@nuxt/builder": "^2.11.0",
+    "@nuxt/core": "^2.11.0",
+    "@nuxt/webpack": "^2.11.0",
+    "@types/webpack": "^4.41.0",
+    "typescript": "^3.7.3",
+    "webpack": "^4.41.4"
+  },
+  "peerDependencies": {
+    "@storybook/vue": ">=5",
+    "nuxt": ">=2"
+  },
+  "scripts": {
+    "build": "tsc --outDir lib"
+  }
+}

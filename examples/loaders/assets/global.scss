@@ -1,0 +1,7 @@
+h1:first-of-type {
+  &::after {
+    content: " (and I'm from global.scss)";
+    font-size: 0.8em;
+    color: green;
+  }
+}
