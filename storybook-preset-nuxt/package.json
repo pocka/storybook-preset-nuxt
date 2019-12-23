@@ -1,6 +1,6 @@
 {
   "name": "storybook-preset-nuxt",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "Nuxt.js preset for Storybook",
   "main": "lib/index.js",
   "files": [
