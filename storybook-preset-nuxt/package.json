@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Nuxt.js preset for Storybook",
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "repository": "https://github.com/pocka/storybook-preset-nuxt",
   "author": "Shota Fuji <pockawoooh@gmail.com>",
   "license": "MIT",
@@ -25,6 +28,7 @@
     "nuxt": ">=2"
   },
   "scripts": {
-    "build": "tsc --outDir lib"
+    "build": "tsc --outDir lib",
+    "prepack": "cp ../README.md ./ && cp ../LICENSE ./ && yarn build"
   }
 }
