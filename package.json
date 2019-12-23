@@ -5,6 +5,16 @@
     "storybook-preset-nuxt",
     "examples/*"
   ],
+  "scripts": {
+    "format": "prettier --write $npm_package_config_lint_targets",
+    "fmt": "npm run format",
+    "lint": "prettier --check $npm_package_config_lint_targets"
+  },
+  "config": {
+    "lint": {
+      "targets": "storybook-preset-nuxt/src/**/*.ts"
+    }
+  },
   "devDependencies": {
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
