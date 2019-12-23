@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
       - name: Install dependencies
-        run: npm install
+        run: yarn install
       - name: Publish package
         working-directory: ./storybook-preset-nuxt
         run: |
