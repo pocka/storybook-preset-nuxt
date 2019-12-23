@@ -22,7 +22,6 @@
     "@storybook/addons": "^5.2.8",
     "@storybook/vue": "^5.2.8",
     "babel-loader": "^8.0.6",
-    "babel-preset-vue": "^2.0.2",
-    "storybook-preset-nuxt": "0.1.0"
+    "babel-preset-vue": "^2.0.2"
   }
 }
