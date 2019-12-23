@@ -10,10 +10,10 @@ First, install this preset to your project.
 
 ```sh
 # yarn
-yarn add -D storybook-preset-nuxt
+yarn add -D storybook-preset-nuxt@alpha
 
 # npm
-npm i -D storybook-preset-nuxt
+npm i -D storybook-preset-nuxt@alpha
 ```
 
 Once installed, add this preset to the appropriate file:
