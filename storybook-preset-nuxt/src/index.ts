@@ -1,9 +1,12 @@
 import { Builder } from '@nuxt/builder'
 import { Nuxt } from '@nuxt/core'
 import { BundleBuilder } from '@nuxt/webpack'
-import * as esm from 'esm'
-import * as findUp from 'find-up'
+import esm from 'esm'
+import findUp from 'find-up'
 import { Configuration, DefinePlugin } from 'webpack'
+import InjectPlugin, { ENTRY_ORDER } from 'webpack-inject-plugin'
+
+import { createShim } from './nuxtPluginShim'
 
 export interface PresetOptions {
   /**
@@ -38,12 +41,15 @@ const webpack = async (
 
   const nuxt = new Nuxt(nuxtConfig)
 
-  await nuxt.ready()
+  // Replace Nuxt's build process with empty function to prevent
+  // Builder::build method from building whole application.
+  BundleBuilder.prototype.build = () => Promise.resolve()
 
   const builder = new Builder(nuxt, BundleBuilder)
 
-  // Run pre-build hook.
-  await nuxt.callHook('build:before', builder, nuxt.options.build)
+  // We need call this method to create .nuxt directory.
+  // FIXME: Nuxt starts watch task and it results in duplicated watch processes.
+  await builder.build()
 
   const nuxtWebpack = await builder.bundleBuilder.getWebpackConfig('Modern')
 
@@ -85,20 +91,32 @@ const webpack = async (
     }
   }
 
-  // TODO: Plugins are heavily depends on .nuxt directory.
-  //       So we need to create or mock it.
-  /*
   const clientPlugins = (nuxt.options.plugins as any[])
+    .map(plugin => {
+      if (typeof plugin === 'string') {
+        return {
+          src: plugin,
+          mode: 'all'
+        }
+      }
+
+      return plugin
+    })
     .filter(plugin => plugin.mode !== 'server')
     .map(plugin => plugin.src)
-  */
 
-  // Inject global CSSs and client plugins
-  config.entry = [
-    // ...clientPlugins,
-    ...(config.entry as string[]),
-    ...nuxt.options.css
-  ]
+  // Simulate Nuxt plugin system by adding shim code.
+  const shim = createShim(clientPlugins)
+
+  config.plugins?.push(
+    new InjectPlugin(() => shim, {
+      entryName: 'nuxt-shim.js',
+      entryOrder: ENTRY_ORDER.Last
+    })
+  )
+
+  // Inject global CSSs
+  config.entry = [...(config.entry as string[]), ...nuxt.options.css]
 
   return config
 }

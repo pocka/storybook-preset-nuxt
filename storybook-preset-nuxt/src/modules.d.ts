@@ -23,6 +23,8 @@ declare module '@nuxt/webpack' {
   export class BundleBuilder {
     constructor(context: unknown)
     public getWebpackConfig(name: 'Client' | 'Modern' | 'Server'): Configuration
+
+    public build(): Promise<void>
   }
 }
 
@@ -33,6 +35,8 @@ declare module '@nuxt/builder' {
   export class Builder {
     constructor(nuxt: Nuxt, bundleBuilder: InstanceType<BundleBuilder>)
     public bundleBuilder: BundleBuilder
+
+    public build(): Promise<Builder>
   }
 }
 

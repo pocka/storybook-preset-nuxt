@@ -8,7 +8,9 @@
   "license": "MIT",
   "dependencies": {
     "esm": "^3.2.25",
-    "find-up": "^4.1.0"
+    "find-up": "^4.1.0",
+    "rev-hash": "^3.0.0",
+    "webpack-inject-plugin": "^1.5.3"
   },
   "devDependencies": {
     "@nuxt/builder": "^2.11.0",
