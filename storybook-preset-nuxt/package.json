@@ -28,7 +28,7 @@
     "nuxt": ">=2"
   },
   "scripts": {
-    "build": "tsc --outDir lib && cp -r src/shims lib/shims",
+    "build": "tsc --outDir lib && cp -r src/shims lib/",
     "prepack": "cp ../README.md ./ && cp ../LICENSE ./ && yarn build"
   }
 }
