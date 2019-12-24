@@ -8,7 +8,7 @@ import revHash from 'rev-hash'
  * @param plugins - A list of path to plugins.
  * @returns Nuxt shim code.
  */
-export const createShim = (plugins: string[]) => {
+export const createShim = (plugins: string[], entries: string[]) => {
   const modules = plugins.map(path => {
     return {
       path,
@@ -23,23 +23,28 @@ export const createShim = (plugins: string[]) => {
   const applyStatements = modules
     .map(
       mod => `if (typeof ${mod.ident} === 'function') {
-        ${mod.ident}(Vue.prototype, inject)
+        ${mod.ident}(context, inject)
       }`
     )
     .join('\n')
+
+  const loadEntries = entries.map(mod => `import("${mod}")`).join('\n')
 
   // NOTE: The shim for context object (prototype.app) might be incorrect.
   //       Probably we need to implement more proper shim code.
   return `
     import Vue from 'vue'
+
     ${importStatements}
 
-    Vue.prototype.app = {}
+    const context = {
+      app: {}
+    }
 
     const inject = (_key, value) => {
       const key = '$' + _key
 
-      Vue.prototype.app[key] = value
+      context[key] = value
 
       const installKey = '__nuxt_' + key + '_installed'
 
@@ -52,7 +57,7 @@ export const createShim = (plugins: string[]) => {
       Vue.use(() => {
         if (!Object.prototype.hasOwnProperty.call(Vue, key)) {
           Object.defineProperty(Vue.prototype, key, {
-            get () {
+            get() {
               return value
             }
           })
@@ -61,5 +66,18 @@ export const createShim = (plugins: string[]) => {
     }
 
     ${applyStatements}
+
+    Vue.use(() => {
+      for (const key in context.app) {
+        Object.defineProperty(Vue.options, key, {
+          enumerable: true,
+          get() {
+            return context.app[key]
+          }
+        })
+      }
+    })
+
+    ${loadEntries}
   `
 }

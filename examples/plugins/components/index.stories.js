@@ -1,10 +1,10 @@
-import VuetifyButton from './VuetifyButton.vue'
+import BootstrapButton from './BootstrapButton.vue'
 
 export default {
-  title: 'Vuetify'
+  title: 'Bootstrap'
 }
 
 export const button = () => ({
-  components: { VuetifyButton },
-  template: '<vuetify-button/>'
+  components: { BootstrapButton },
+  template: '<bootstrap-button/>'
 })

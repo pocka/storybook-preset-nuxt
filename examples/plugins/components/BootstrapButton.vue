@@ -1,5 +1,5 @@
 <template>
-  <v-btn class="ma-2" outlined color="primary">{{ text }}</v-btn>
+  <b-btn variant="primary">{{ text }}</b-btn>
 </template>
 
 <script>

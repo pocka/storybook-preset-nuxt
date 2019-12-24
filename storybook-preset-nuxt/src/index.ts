@@ -106,17 +106,19 @@ const webpack = async (
     .map(plugin => plugin.src)
 
   // Simulate Nuxt plugin system by adding shim code.
-  const shim = createShim(clientPlugins)
+  const shim = createShim(clientPlugins, config.entry as string[])
 
   config.plugins?.push(
     new InjectPlugin(() => shim, {
       entryName: 'nuxt-shim.js',
-      entryOrder: ENTRY_ORDER.Last
+      entryOrder: ENTRY_ORDER.First
     })
   )
 
+  const shims = require.resolve('./shims')
+
   // Inject global CSSs
-  config.entry = [...(config.entry as string[]), ...nuxt.options.css]
+  config.entry = [shims, ...nuxt.options.css]
 
   return config
 }
