@@ -39,7 +39,7 @@ const webpack = async (
     return e.default ?? e
   })(nuxtConfigModule.default ?? nuxtConfigModule)
 
-  const nuxt = new Nuxt(nuxtConfig)
+  const nuxt = new Nuxt(overrideNuxtConfig(nuxtConfig))
 
   // Replace Nuxt's build process with empty function to prevent
   // Builder::build method from building whole application.
@@ -130,6 +130,20 @@ const webpackFinal = (config: Configuration): Configuration => {
   config.module!.rules = config.module!.rules.slice(0, -3)
 
   return config
+}
+
+const overrideNuxtConfig = (config: any) => {
+  if (typeof config !== 'object' || !config) {
+    return config
+  }
+
+  return {
+    ...config,
+    // Opt-out telemetry.
+    // This is enabled **by default** from 2.13 and it prompts confirmation
+    // on terminal. Such a poor decision.
+    telemetry: false
+  }
 }
 
 export default { webpack, webpackFinal }
