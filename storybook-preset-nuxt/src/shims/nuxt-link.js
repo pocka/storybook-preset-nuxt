@@ -1,9 +1,29 @@
 export default {
   name: 'NuxtLink',
-  methods: {
-    preventDefault(ev) {
-      ev.preventDefault()
+  props: {
+    to: {
+      type: String,
+      required: true
+    },
+    tag: {
+      type: String,
+      default: 'a'
     }
   },
-  template: '<a href="#" @click="preventDefault"><slot/></a>'
+  render(h) {
+    return h(
+      this.tag,
+      {
+        attrs: {
+          href: this.to
+        },
+        on: {
+          click(ev) {
+            ev.preventDefault()
+          }
+        }
+      },
+      this.$slots.default
+    )
+  }
 }
