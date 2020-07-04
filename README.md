@@ -1,5 +1,7 @@
 # storybook-preset-nuxt
 
+[![npm version](https://badge.fury.io/js/storybook-preset-nuxt.svg)](https://badge.fury.io/js/storybook-preset-nuxt)
+
 One-line [Nuxt.js](https://github.com/nuxt/nuxt.js) configuration for Storybook.
 
 This preset is designed to use alongside [`@storybook/vue`](https://github.com/storybookjs/storybook/tree/master/app/vue).
