@@ -43,6 +43,13 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {},
+    babel: {
+      presets({ isServer }, [preset, options]) {
+        // change options directly
+        options.corejs = 3
+        // return nothing
+      }
+    }
   }
 }

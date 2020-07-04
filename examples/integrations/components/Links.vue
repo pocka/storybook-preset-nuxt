@@ -1,3 +1,19 @@
+<script>
+import Vue from 'vue'
+
+export default {
+  props: {
+    /**
+     * Bar Baz Qux.
+     */
+    foo: {
+      type: [String, Number],
+      default: Infinity
+    }
+  }
+}
+</script>
+
 <template>
   <ul>
     <li>

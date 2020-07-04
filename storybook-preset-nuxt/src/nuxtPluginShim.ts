@@ -8,7 +8,7 @@ import revHash from 'rev-hash'
  * @param plugins - A list of path to plugins.
  * @returns Nuxt shim code.
  */
-export const createShim = (plugins: string[], entries: string[]) => {
+export const createShim = (plugins: string[]) => {
   const modules = plugins.map(path => {
     return {
       path,
@@ -27,8 +27,6 @@ export const createShim = (plugins: string[], entries: string[]) => {
       }`
     )
     .join('\n')
-
-  const loadEntries = entries.map(mod => `import("${mod}")`).join('\n')
 
   // NOTE: The shim for context object (prototype.app) might be incorrect.
   //       Probably we need to implement more proper shim code.
@@ -77,7 +75,5 @@ export const createShim = (plugins: string[], entries: string[]) => {
         })
       }
     })
-
-    ${loadEntries}
   `
 }

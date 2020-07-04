@@ -1,43 +1,37 @@
-declare module '@nuxt/core' {
-  class ModuleContainer {
-    public async ready(): Promise<void>
+declare module 'nuxt' {
+  import * as webpack from 'webpack'
+
+  export interface LoadOptions {
+    for?: string
+    rootDir?: string
+    configFile?: string
+    configContext?: object
   }
 
-  export class Nuxt {
-    constructor(options: any)
-    public options: any
-    public moduleContainer: ModuleContainer
+  export function getWebpackConfig(
+    name?: string,
+    options?: LoadOptions
+  ): Promise<webpack.Configuration>
 
-    public ready(): Promise<Nuxt>
-    public callHook(
-      name: string,
-      instance: unknown,
-      options: unknown
-    ): Promise<void>
+  export interface Nuxt {
+    options: {
+      plugins: any[]
+      css: string[]
+    }
   }
+
+  export function loadNuxt(options?: LoadOptions): Promise<Nuxt>
+
+  export interface Builder {
+    bundleBuilder: {
+      getWebpackConfig(name: string): Promise<webpack.Configuration>
+      buildContext: any
+    }
+
+    build(): Promise<void>
+  }
+
+  export function getBuilder(nuxt: Nuxt): Promise<Builder>
+
+  export function build(nuxt: any): Promise<void>
 }
-
-declare module '@nuxt/webpack' {
-  import { Configuration } from 'webpack'
-
-  export class BundleBuilder {
-    constructor(context: unknown)
-    public getWebpackConfig(name: 'Client' | 'Modern' | 'Server'): Configuration
-
-    public build(): Promise<void>
-  }
-}
-
-declare module '@nuxt/builder' {
-  import { Nuxt } from '@nuxt/core'
-  import { BundleBuilder } from '@nuxt/webpack'
-
-  export class Builder {
-    constructor(nuxt: Nuxt, bundleBuilder: InstanceType<BundleBuilder>)
-    public bundleBuilder: BundleBuilder
-
-    public build(): Promise<Builder>
-  }
-}
-
-declare module 'esm'

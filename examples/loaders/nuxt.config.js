@@ -40,6 +40,18 @@ export default {
    ** Build configuration
    */
   build: {
+    babel: {
+      presets() {
+        return [
+          [
+            '@nuxt/babel-preset-app',
+            {
+              corejs: 3
+            }
+          ]
+        ]
+      }
+    },
     /*
      ** You can extend webpack config here
      */

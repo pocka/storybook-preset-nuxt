@@ -10,25 +10,20 @@
   "author": "Shota Fuji <pockawoooh@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "esm": "^3.2.25",
-    "find-up": "^4.1.0",
     "rev-hash": "^3.0.0",
     "webpack-inject-plugin": "^1.5.3"
   },
   "devDependencies": {
-    "@nuxt/builder": "^2.11.0",
-    "@nuxt/core": "^2.11.0",
-    "@nuxt/webpack": "^2.11.0",
     "@types/webpack": "^4.41.0",
     "typescript": "^3.7.3",
     "webpack": "^4.41.4"
   },
   "peerDependencies": {
     "@storybook/vue": ">=5",
-    "nuxt": ">=2"
+    "nuxt": ">=2.12.0"
   },
   "scripts": {
-    "build": "tsc --outDir lib && cp -r src/shims lib/",
+    "build": "tsc --outDir lib",
     "prepack": "cp ../README.md ./ && cp ../LICENSE ./ && yarn build"
   }
 }

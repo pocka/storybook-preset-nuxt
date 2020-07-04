@@ -10,7 +10,7 @@ export default {
       default: 'a'
     }
   },
-  render(h) {
+  render(this: any, h: any): any {
     return h(
       this.tag,
       {
@@ -18,7 +18,7 @@ export default {
           href: this.to
         },
         on: {
-          click(ev) {
+          click(ev: any) {
             ev.preventDefault()
           }
         }

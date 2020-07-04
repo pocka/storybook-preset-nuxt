@@ -1,7 +1,8 @@
 import Links from '~/components/Links.vue'
 
 export default {
-  title: 'Links'
+  title: 'Links',
+  component: Links
 }
 
 export const demo = () => ({

@@ -1,8 +1,4 @@
-import { Builder } from '@nuxt/builder'
-import { Nuxt } from '@nuxt/core'
-import { BundleBuilder } from '@nuxt/webpack'
-import esm from 'esm'
-import findUp from 'find-up'
+import * as nuxt from 'nuxt'
 import { Configuration, DefinePlugin } from 'webpack'
 import InjectPlugin, { ENTRY_ORDER } from 'webpack-inject-plugin'
 
@@ -19,39 +15,18 @@ const webpack = async (
   config: Configuration,
   options: PresetOptions
 ): Promise<Configuration> => {
-  // TODO: Refactor config obtaining logic
-  const nuxtConfigPath = options.nuxtConfig || (await findUp('nuxt.config.js'))
+  const nuxtInstance = await nuxt.loadNuxt({
+    for: 'dev',
+    configFile: options.nuxtConfig
+  })
 
-  // Should we allow zero-config project?
-  if (!nuxtConfigPath) {
-    throw new Error('Could not find Nuxt config file.')
-  }
-
-  const nuxtConfigModule = esm(module)(nuxtConfigPath) || {}
-
-  const nuxtConfig = await (async mod => {
-    if (typeof mod !== 'function') {
-      return mod
-    }
-
-    const e = await mod()
-
-    return e.default ?? e
-  })(nuxtConfigModule.default ?? nuxtConfigModule)
-
-  const nuxt = new Nuxt(overrideNuxtConfig(nuxtConfig))
-
-  // Replace Nuxt's build process with empty function to prevent
-  // Builder::build method from building whole application.
-  BundleBuilder.prototype.build = () => Promise.resolve()
-
-  const builder = new Builder(nuxt, BundleBuilder)
+  const builder = await nuxt.getBuilder(nuxtInstance)
 
   // We need call this method to create .nuxt directory.
   // FIXME: Nuxt starts watch task and it results in duplicated watch processes.
   await builder.build()
 
-  const nuxtWebpack = await builder.bundleBuilder.getWebpackConfig('Modern')
+  const nuxtWebpack = await builder.bundleBuilder.getWebpackConfig('client')
 
   // Use Nuxt's DefinePlugin so users can use globals defined by Nuxt
   // (e.g. `process.browser`, `process.modern`).
@@ -91,7 +66,7 @@ const webpack = async (
     }
   }
 
-  const clientPlugins = (nuxt.options.plugins as any[])
+  const clientPlugins = nuxtInstance.options.plugins
     .map(plugin => {
       if (typeof plugin === 'string') {
         return {
@@ -106,7 +81,7 @@ const webpack = async (
     .map(plugin => plugin.src)
 
   // Simulate Nuxt plugin system by adding shim code.
-  const shim = createShim(clientPlugins, config.entry as string[])
+  const shim = createShim(clientPlugins)
 
   config.plugins?.push(
     new InjectPlugin(() => shim, {
@@ -118,7 +93,11 @@ const webpack = async (
   const shims = require.resolve('./shims')
 
   // Inject global CSSs
-  config.entry = [shims, ...nuxt.options.css]
+  config.entry = [
+    shims,
+    ...nuxtInstance.options.css,
+    ...(config.entry as string[])
+  ]
 
   return config
 }
@@ -130,20 +109,6 @@ const webpackFinal = (config: Configuration): Configuration => {
   config.module!.rules = config.module!.rules.slice(0, -3)
 
   return config
-}
-
-const overrideNuxtConfig = (config: any) => {
-  if (typeof config !== 'object' || !config) {
-    return config
-  }
-
-  return {
-    ...config,
-    // Opt-out telemetry.
-    // This is enabled **by default** from 2.13 and it prompts confirmation
-    // on terminal. Such a poor decision.
-    telemetry: false
-  }
 }
 
 export default { webpack, webpackFinal }
