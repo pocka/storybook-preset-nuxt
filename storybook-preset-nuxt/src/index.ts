@@ -16,7 +16,7 @@ const webpack = async (
   options: PresetOptions
 ): Promise<Configuration> => {
   const nuxtInstance = await nuxt.loadNuxt({
-    for: 'dev',
+    for: config.mode === 'development' ? 'dev' : 'build',
     configFile: options.nuxtConfig
   })
 
