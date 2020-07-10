@@ -23,7 +23,7 @@ Once installed, add this preset to the appropriate file:
 - `.storybook/main.js` (for Storybook >= 5.3)
   ```js
   // .storybook/main.js
-  module.exports = { presets: ['storybook-preset-nuxt'] }
+  module.exports = { addons: ['storybook-preset-nuxt'] }
   ```
 - `.storybook/presets.js` (for Storybook >= 5.1)
   ```js
@@ -36,15 +36,17 @@ Once installed, add this preset to the appropriate file:
 If you have custom Nuxt config file, you can specify the path to the file.
 
 ```js
-// .storybook/presets.js
+// .storybook/main.js
 const path = require('path')
 
-module.exports = [
-  {
-    name: 'storybook-preset-nuxt',
-    options: {
-      nuxtConfig: path.resolve(__dirname, '../path/to/config')
+module.exports = {
+  addons: [
+    {
+      name: 'storybook-preset-nuxt',
+      options: {
+        nuxtConfig: path.resolve(__dirname, '../path/to/config')
+      }
     }
-  }
-]
+  ]
+}
 ```
