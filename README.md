@@ -50,3 +50,9 @@ module.exports = {
   ]
 }
 ```
+
+## Troubleshooting
+
+### Failed to build with a bunch of core-js related errors
+
+Since Storybook depends on core-js@3, in most cases, package managers resolves `core-js` to `core-js@3`. This would cause errors because Nuxt.js relies on `core-js@2`. To solve these errors, add `core-js@2` as a direct dependency of your package or [setup Nuxt.js to use `core-js@3`](https://nuxtjs.org/guide/release-notes#v2.6.0).
