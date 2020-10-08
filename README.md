@@ -1,3 +1,7 @@
+# Deprecated
+
+Use [`@nuxtjs/storybook`](https://github.com/nuxt-community/storybook) instead.
+
 # storybook-preset-nuxt
 
 [![npm version](https://badge.fury.io/js/storybook-preset-nuxt.svg)](https://badge.fury.io/js/storybook-preset-nuxt)
